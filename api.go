@@ -38,7 +38,7 @@ type Sdk struct {
 func NewTimByKeyPair(sdkAppid int, publicKey, privateKey, identifier string) (*Sdk, error) {
 	// var err error
 
-	t := &Sdk{
+	s := &Sdk{
 		sdkAppid: sdkAppid,
 		identifier: identifier,
 		publicKey: publicKey,
@@ -50,11 +50,11 @@ func NewTimByKeyPair(sdkAppid int, publicKey, privateKey, identifier string) (*S
 	//	return nil, err
 	// }
 
-	t.Group = &group{
-		Tim: t,
+	s.Group = &group{
+		Sdk: s,
 	}
 
-	return t, nil
+	return s, nil
 }
 
 func (t *Sdk) request(servicename, command string, reqData interface{}, out interface{}) (error) {
