@@ -1,4 +1,4 @@
-module liyifei/tencentim
+module github.com/leeyifei/tencentim-go
 
 go 1.14
 

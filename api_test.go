@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 	"strconv"
-	"qianfan/middle/t"
 )
 
 var s *Sdk
