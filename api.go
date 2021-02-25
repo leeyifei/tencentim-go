@@ -1,27 +1,27 @@
 package tencentim
 
 import (
-	sig "github.com/tencentyun/tls-sig-api-golang"
-	"time"
-	"fmt"
-	"math/rand"
-	"encoding/json"
-	"net/http"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	sig "github.com/tencentyun/tls-sig-api-golang"
 	"io/ioutil"
+	"math/rand"
+	"net/http"
+	"time"
 )
 
 const (
 	SIGN_MODE_KEYPAIR = 1
 
-	API_DOMAIN = "console.tim.qq.com"
+	API_DOMAIN  = "console.tim.qq.com"
 	API_VERSION = "v4"
 )
 
 type Resp struct {
 	ActionStatus string `json:"ActionStatus"`
 	ErrorInfo    string `json:"ErrorInfo"`
-	ErrorCode    int `json:"ErrorCode"`
+	ErrorCode    int    `json:"ErrorCode"`
 }
 
 type Sdk struct {
@@ -32,18 +32,20 @@ type Sdk struct {
 	signMode   int
 	// sig        string
 
-	Group      *group
+	Group   *group
+	Account *account
+	Openim  *openim
 }
 
 func NewTimByKeyPair(sdkAppid int, publicKey, privateKey, identifier string) (*Sdk, error) {
 	// var err error
 
 	s := &Sdk{
-		sdkAppid: sdkAppid,
+		sdkAppid:   sdkAppid,
 		identifier: identifier,
-		publicKey: publicKey,
+		publicKey:  publicKey,
 		privateKey: privateKey,
-		signMode: SIGN_MODE_KEYPAIR,
+		signMode:   SIGN_MODE_KEYPAIR,
 	}
 
 	// if t.sig, err = UserSig(t.privateKey, t.sdkAppid, t.identifier); err != nil {
@@ -54,10 +56,17 @@ func NewTimByKeyPair(sdkAppid int, publicKey, privateKey, identifier string) (*S
 		Sdk: s,
 	}
 
+	s.Account = &account{
+		Sdk: s,
+	}
+
+	s.Openim = &openim{
+		Sdk: s,
+	}
 	return s, nil
 }
 
-func (t *Sdk) request(servicename, command string, reqData interface{}, out interface{}) (error) {
+func (t *Sdk) request(servicename, command string, reqData interface{}, out interface{}) error {
 	var err error
 
 	reqBodyByte, err := json.Marshal(reqData)
