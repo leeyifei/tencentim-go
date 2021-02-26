@@ -1,10 +1,10 @@
 package tencentim
 
 import (
-	"os"
 	"fmt"
-	"testing"
+	"os"
 	"strconv"
+	"testing"
 )
 
 var s *Sdk

@@ -1,16 +1,15 @@
 package tencentim
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestCreateGroup(test *testing.T) {
 	req := &CreateGroupReq{
 		Owner: "liyifei",
-		Type: GROUP_TYPE_PRIVATE,
-		Name: "test api",
-
+		Type:  GROUP_TYPE_PRIVATE,
+		Name:  "test api",
 	}
 
 	resp, err := s.Group.CreateGroup(req)
@@ -24,7 +23,7 @@ func TestCreateGroup(test *testing.T) {
 
 func TestModifyGroupBaseInfo(test *testing.T) {
 	req := &ModifyGroupBaseInfoReq{
-		GroupId: "@TGS#12F33JYGF",
+		GroupId:         "@TGS#12F33JYGF",
 		ShutUpAllMember: "On",
 	}
 

@@ -1,9 +1,9 @@
 package tencentim
 
 const (
-	GROUP_TYPE_PRIVATE = "Private"
-	GROUP_TYPE_PUBLIC = "Public"
-	GROUP_TYPE_CHATROOM = "ChatRoom"
+	GROUP_TYPE_PRIVATE    = "Private"
+	GROUP_TYPE_PUBLIC     = "Public"
+	GROUP_TYPE_CHATROOM   = "ChatRoom"
 	GROUP_TYPE_AVCHATROOM = "AVChatRoom"
 
 	GROUP_SERVICENAME = "group_open_http_svc"
@@ -17,7 +17,7 @@ type CreateGroupReq struct {
 	Introduction    string `json:"Introduction,omitempty"`
 	Notification    string `json:"Notification,omitempty"`
 	FaceuUrl        string `json:"FaceUrl,omitempty"`
-	MaxMemberCount  int `json:"MaxMemberCount,omitempty"`
+	MaxMemberCount  int    `json:"MaxMemberCount,omitempty"`
 	ApplyJoinOption string `json:"ApplyJoinOption,omitempty"`
 }
 
