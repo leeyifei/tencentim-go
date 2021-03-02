@@ -75,6 +75,26 @@ type SendMsgResp struct {
 	MsgKey  string `json:"MsgKey"`
 }
 
+type BatchSendMsgReq struct {
+	SyncOtherMachine uint            `json:"SyncOtherMachine,omitempty"`
+	FromAccount      string          `json:"From_Account,omitempty"`
+	ToAccount        []string        `json:"To_Account"`
+	MsgRandom        uint64          `json:"MsgRandom"`
+	MsgBody          []MsgBody       `json:"MsgBody"`
+	OfflinePushInfo  OfflinePushInfo `json:"OfflinePushInfo,omitempty"`
+}
+
+type BatchSendMsgErrorList struct {
+	ToAccount string `json:"To_Account"`
+	ErrorCode uint   `json:"ErrorCode"`
+}
+
+type BatchSendMsgResp struct {
+	Resp
+	MsgKey    string                  `json:"MsgKey"`
+	ErrorList []BatchSendMsgErrorList `json:"ErrorList"`
+}
+
 type QuerystateReq struct {
 	IsNeedDetail int      `json:"IsNeedDetail,omitempty"`
 	ToAccount    []string `json:"To_Account"`
@@ -116,6 +136,17 @@ func (o *openim) Querystate(req *QuerystateReq) (*QuerystateResp, error) {
 func (o *openim) Sendmsg(req *SendMsgReq) (*SendMsgResp, error) {
 	var resp SendMsgResp
 	err := o.Sdk.request(OPENIM_SERVICENAME, "sendmsg", req, &resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resp, err
+}
+
+// 批量发送单聊消息
+func (o *openim) BatchSendmsg(req *BatchSendMsgReq) (*BatchSendMsgResp, error) {
+	var resp BatchSendMsgResp
+	err := o.Sdk.request(OPENIM_SERVICENAME, "batchsendmsg", req, &resp)
 	if err != nil {
 		return nil, err
 	}
