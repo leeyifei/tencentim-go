@@ -34,21 +34,45 @@ type OfflinePushInfo struct {
 }
 
 type TypeText struct {
+	Text string `json:"Text"`
+}
+type TypeLocation struct {
+	Desc      string  `json:"Desc"`
+	Latitude  float64 `json:"Latitude"`
+	Longitude float64 `json:"Longitude"`
+}
+type TypeFace struct {
+	Index uint   `json:"Index"`
+	Data  string `json:"Data"`
+}
+type TypeCustom struct {
+	Data  string ` json:"Data"`
+	Desc  string `json:"Desc"`
+	Ext   string `json:"Ext"`
+	Sound string `json:"Sound"`
+}
+
+type MsgBody struct {
+	MsgType    string      `json:"MsgType"`
+	MsgContent interface{} `json:"MsgContent"`
 }
 
 type SendMsgReq struct {
-	SyncOtherMachine      uint     `json:"SyncOtherMachine,omitempty"`
-	FromAccount           string   `json:"From_Account,omitempty"`
-	ToAccount             string   `json:"To_Account"`
-	MsgLifeTime           uint32   `json:"MsgLifeTime,omitempty"`
-	MsgRandom             uint64   `json:"MsgRandom"`
-	MsgTimeStamp          uint64   `json:"MsgTimeStamp,omitempty"`
-	ForbidCallbackControl []string `json:"ForbidCallbackControl,omitempty"`
-	MsgBody               []struct {
-		MsgType    string      `json:"MsgType"`
-		MsgContent interface{} `json:"MsgContent"`
-	} `json:"MsgBody"`
-	OfflinePushInfo OfflinePushInfo `json:"OfflinePushInfo,omitempty"`
+	SyncOtherMachine      uint            `json:"SyncOtherMachine,omitempty"`
+	FromAccount           string          `json:"From_Account,omitempty"`
+	ToAccount             string          `json:"To_Account"`
+	MsgLifeTime           uint32          `json:"MsgLifeTime,omitempty"`
+	MsgRandom             uint64          `json:"MsgRandom"`
+	MsgTimeStamp          uint64          `json:"MsgTimeStamp,omitempty"`
+	ForbidCallbackControl []string        `json:"ForbidCallbackControl,omitempty"`
+	MsgBody               []MsgBody       `json:"MsgBody"`
+	OfflinePushInfo       OfflinePushInfo `json:"OfflinePushInfo,omitempty"`
+}
+
+type SendMsgResp struct {
+	Resp
+	MsgTime uint64 `json:"MsgTime"`
+	MsgKey  string `json:"MsgKey"`
 }
 
 type QuerystateReq struct {
@@ -88,6 +112,13 @@ func (o *openim) Querystate(req *QuerystateReq) (*QuerystateResp, error) {
 	return &resp, nil
 }
 
-func (o *openim) Sendmsg() {
+// 发送单聊消息
+func (o *openim) Sendmsg(req *SendMsgReq) (*SendMsgResp, error) {
+	var resp SendMsgResp
+	err := o.Sdk.request(OPENIM_SERVICENAME, "sendmsg", req, &resp)
+	if err != nil {
+		return nil, err
+	}
 
+	return &resp, err
 }
